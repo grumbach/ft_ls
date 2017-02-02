@@ -6,19 +6,20 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/01 21:26:08 by agrumbac          #+#    #+#             */
-/*   Updated: 2017/02/02 17:04:26 by agrumbac         ###   ########.fr       */
+/*   Updated: 2017/02/02 17:43:29 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-void			errors(int error, const char *letter)
+long			errors(int error, const char *letter)
 {
 	if (error == 1)
 	{
 		ft_putstr_fd("ft_ls: illegal option -- ", 2);
 		ft_putstr_fd(letter, 2);
 		ft_putstr_fd("\nusage: ft_ls [-"LS_FLAGS"] [file ...]\n", 2);
+		exit(-1);
 	}
 	else if (letter)
 	{
@@ -28,8 +29,11 @@ void			errors(int error, const char *letter)
 		ft_putendl_fd(strerror(errno), 2);
 	}
 	else
+	{
 		ft_putendl_fd(strerror(errno), 2);
-	exit(-1);
+		exit(-1);
+	}
+	return (0);
 }
 
 static void		free_lst(void *inf, size_t size)
@@ -73,11 +77,15 @@ void			ft_ls(const char *path, const char *flags)
 
 	ft_printf("================ft_ls(%s, %s)==============\n\n", path, flags);
 	lst = ft_ls_back(path, flags);
-	lst = ft_ls_sort(lst, flags);
-	ft_ls_front(lst, flags);
+	if (lst)
+	{
+		lst = ft_ls_sort(lst, flags);
+		ft_ls_front(lst, flags);
+	}
 	if (ft_strchr(flags, 'R'))
 		ft_ls_rec(lst, path, flags);
-	ft_lstdel(&lst, &free_lst);
+	if (lst)
+		ft_lstdel(&lst, &free_lst);
 }
 
 int				main(int ac, char **av)
