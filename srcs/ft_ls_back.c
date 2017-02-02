@@ -6,14 +6,14 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/02 02:53:36 by agrumbac          #+#    #+#             */
-/*   Updated: 2017/02/02 16:11:32 by agrumbac         ###   ########.fr       */
+/*   Updated: 2017/02/02 17:09:35 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-void				ft_ls_rec(const t_list *lst, const char *path, \
-					const char *flags)
+void			ft_ls_rec(const t_list *lst, const char *path, \
+				const char *flags)
 {
 	DIR					*dirp;
 	char				*newpath;
@@ -40,7 +40,7 @@ void				ft_ls_rec(const t_list *lst, const char *path, \
 	}
 }
 
-static void			modeguy(struct stat stats, char *mode)
+static void		modeguy(struct stat stats, char *mode)
 {
 	if (S_IFDIR & (stats.st_mode))
 		*mode++ = 'd';
@@ -67,8 +67,7 @@ static void			modeguy(struct stat stats, char *mode)
 	*mode++ = (stats.st_mode & S_IXOTH ? 'x' : '-');
 }
 
-static int			fill_info(t_pls *info, struct dirent *file, \
-					const char *flags, const char *path)
+static int		fill_info(t_pls *info, struct dirent *file, const char *path)
 {
 	struct stat			stats;
 	struct passwd		*pwd;
@@ -77,29 +76,26 @@ static int			fill_info(t_pls *info, struct dirent *file, \
 	char				*newpath;
 
 	info->name = ft_strdup(file->d_name);
-	if (ft_strchr(flags, 'l'))
-	{
-		if (!(tmp = ft_strjoin(((path[ft_strlen(path) - 1] != '/') ? "/" : ""), \
-		info->name)))
-			errors(0, 0);
-		newpath = ft_strjoin(path, tmp);
-		ft_memdel((void**)&tmp);
-		lstat(newpath, &stats);
-		modeguy(stats, info->mode);
-		info->links = stats.st_nlink;
-		pwd = getpwuid(stats.st_uid);
-		info->own = ft_strdup(pwd->pw_name);
-		grp = getgrgid(stats.st_gid);
-		info->group = ft_strdup(grp->gr_name);
-		info->size = stats.st_size;
-		info->blocks = stats.st_blocks;
-		info->date = stats.st_mtime;
-		ft_memdel((void**)&newpath);
-	}
+	if (!(tmp = ft_strjoin(((path[ft_strlen(path) - 1] != '/') ? "/" : ""),\
+	info->name)))
+		errors(0, 0);
+	newpath = ft_strjoin(path, tmp);
+	ft_memdel((void**)&tmp);
+	lstat(newpath, &stats);
+	modeguy(stats, info->mode);
+	info->links = stats.st_nlink;
+	pwd = getpwuid(stats.st_uid);
+	info->own = ft_strdup(pwd->pw_name);
+	grp = getgrgid(stats.st_gid);
+	info->group = ft_strdup(grp->gr_name);
+	info->size = stats.st_size;
+	info->blocks = stats.st_blocks;
+	info->date = stats.st_mtime;
+	ft_memdel((void**)&newpath);
 	return (0);
 }
 
-t_list				*ft_ls_back(const char *path, const char *flags)
+t_list			*ft_ls_back(const char *path, const char *flags)
 {
 	t_list				*lst;
 	t_list				*tmp;
@@ -112,11 +108,10 @@ t_list				*ft_ls_back(const char *path, const char *flags)
 	if (!(dirp = opendir(path)))
 		errors(0, path);
 	while ((file = readdir(dirp)))
-	{
 		if ((file->d_name)[0] != '.' || ft_strchr(flags, 'a'))
 		{
 			if (!(info = ft_memalloc(sizeof(t_pls))) || \
-			fill_info(info, file, flags, path) || \
+			fill_info(info, file, path) || \
 			!(tmp = ft_lstnew(info, sizeof(t_pls))))
 				errors(0, 0);
 			ft_memdel((void**)&info);
@@ -125,7 +120,6 @@ t_list				*ft_ls_back(const char *path, const char *flags)
 			else
 				ft_lstaddend(&lst, tmp);
 		}
-	}
 	(void)closedir(dirp);
 	return (lst);
 }

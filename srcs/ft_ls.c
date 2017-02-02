@@ -6,7 +6,7 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/01 21:26:08 by agrumbac          #+#    #+#             */
-/*   Updated: 2017/02/02 16:09:02 by agrumbac         ###   ########.fr       */
+/*   Updated: 2017/02/02 17:04:26 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,8 @@ static void		setflags(char *flags, const char *format)
 			errors(1, (char[2]){(*format), '\0'});
 		format++;
 	}
+	if (ft_strchr(flags, 'f') && !ft_strchr(flags, 'a'))
+		flags[flags_count++] = 'a';
 }
 
 void			ft_ls(const char *path, const char *flags)
@@ -71,6 +73,7 @@ void			ft_ls(const char *path, const char *flags)
 
 	ft_printf("================ft_ls(%s, %s)==============\n\n", path, flags);
 	lst = ft_ls_back(path, flags);
+	lst = ft_ls_sort(lst, flags);
 	ft_ls_front(lst, flags);
 	if (ft_strchr(flags, 'R'))
 		ft_ls_rec(lst, path, flags);
