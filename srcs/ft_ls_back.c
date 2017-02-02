@@ -6,7 +6,7 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/02 02:53:36 by agrumbac          #+#    #+#             */
-/*   Updated: 2017/02/02 17:41:41 by agrumbac         ###   ########.fr       */
+/*   Updated: 2017/02/02 19:01:26 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,20 +42,20 @@ void			ft_ls_rec(const t_list *lst, const char *path, \
 
 static void		modeguy(struct stat stats, char *mode)
 {
-	if (S_IFDIR & (stats.st_mode))
-		*mode++ = 'd';
-	else if (S_IFREG & (stats.st_mode))
+	if (S_IFREG & (stats.st_mode))
 		*mode++ = '-';
-	else if (S_IFIFO & (stats.st_mode))
-		*mode++ = 'p';
 	else if (S_IFCHR & (stats.st_mode))
 		*mode++ = 'c';
-	else if (S_IFBLK & (stats.st_mode))
-		*mode++ = 'b';
-	else if (S_IFSOCK & stats.st_mode)
-		*mode++ = 's';
+	else if (S_IFIFO & (stats.st_mode))
+		*mode++ = 'p';
+	else if (S_IFDIR & (stats.st_mode))
+		*mode++ = 'd';
 	else if (S_IFLNK & (stats.st_mode))
 		*mode++ = 'l';
+	else if (S_IFBLK & (stats.st_mode))
+		*mode++ = 'b';
+	else if (S_IFSOCK & (stats.st_mode))
+		*mode++ = 's';
 	*mode++ = (stats.st_mode & S_IRUSR ? 'r' : '-');
 	*mode++ = (stats.st_mode & S_IWUSR ? 'w' : '-');
 	*mode++ = (stats.st_mode & S_IXUSR ? 'x' : '-');

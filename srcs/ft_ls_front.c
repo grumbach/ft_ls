@@ -6,7 +6,7 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/02 02:53:24 by agrumbac          #+#    #+#             */
-/*   Updated: 2017/02/02 18:38:12 by agrumbac         ###   ########.fr       */
+/*   Updated: 2017/02/02 19:03:14 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,28 +48,27 @@ static long long	total_block(const t_list *lst)
 void				ft_ls_front(const t_list *lst, const char *flags)
 {
 	t_pls				*info;
-	const t_list		*tmp;
 	unsigned int		padd[10];
 
 	ft_bzero(padd, sizeof(padd));
-	tmp = lst;
 	if (ft_strchr(flags, 'l'))
 	{
 		ft_printf("total %lld\n", total_block(lst));
 		padding_tool(lst, padd);
 	}
-	while (tmp)
+	while (lst)
 	{
-		info = (t_pls*)(tmp->content);
+		info = (t_pls*)(lst->content);
 		if (ft_strchr(flags, 'l'))
 		{
 			ft_printf("%-*s %*d %-*s %-*s %*lld %-*.*s %s\n", \
 			padd[MODE] + 1, info->mode, padd[LNKS], info->links, \
 			padd[OWN] + 1, info->own, padd[GROUP], info->group, \
-			padd[SIZE] + 1, info->size, padd[DATE], padd[DATE_P], ctime(&(info->date)) + 4, info->name);
+			padd[SIZE] + 1, info->size, padd[DATE], padd[DATE_P], \
+			ctime(&(info->date)) + 4, info->name);
 		}
 		else
 			ft_printf("%s\n", info->name);
-		tmp = tmp->next;
+		lst = lst->next;
 	}
 }
