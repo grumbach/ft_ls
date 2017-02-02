@@ -6,7 +6,7 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/01 21:26:08 by agrumbac          #+#    #+#             */
-/*   Updated: 2017/02/02 14:52:16 by agrumbac         ###   ########.fr       */
+/*   Updated: 2017/02/02 16:09:02 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ void			ft_ls(const char *path, const char *flags)
 {
 	t_list		*lst;
 
-	ft_printf("====================ft_ls(%s, %s)\n\n", path, flags);
+	ft_printf("================ft_ls(%s, %s)==============\n\n", path, flags);
 	lst = ft_ls_back(path, flags);
 	ft_ls_front(lst, flags);
 	if (ft_strchr(flags, 'R'))

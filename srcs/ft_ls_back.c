@@ -6,7 +6,7 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/02 02:53:36 by agrumbac          #+#    #+#             */
-/*   Updated: 2017/02/02 15:29:37 by agrumbac         ###   ########.fr       */
+/*   Updated: 2017/02/02 16:11:32 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,20 +22,18 @@ void				ft_ls_rec(const t_list *lst, const char *path, \
 	newpath = NULL;
 	dirp = NULL;
 	tmp = NULL;
-	while (lst)//must remove .. and . B4 here!
+	while (lst)
 	{
-		tmp = ft_strjoin(((path[ft_strlen(path) - 1] != '/') ? "/" : ""), \
-		((t_pls*)(lst->content))->name);
-		newpath = ft_strjoin(path, tmp);
+		if (!(tmp = ft_strjoin(((path[ft_strlen(path) - 1] != '/') ? "/" : ""),\
+		((t_pls*)(lst->content))->name)) || !(newpath = ft_strjoin(path, tmp)))
+			errors(0, 0);
 		ft_memdel((void**)&tmp);
-		//ft_printf("{%s}\n", newpath);
 		if ((dirp = opendir(newpath)))
 		{
 			if (ft_strcmp(((t_pls*)(lst->content))->name, "..") && \
 				ft_strcmp(((t_pls*)(lst->content))->name, "."))
 				ft_ls(newpath, flags);
 			(void)closedir(dirp);
-			//ft_printf("==%s==\n", ((t_pls*)(lst->content))->name);
 		}
 		ft_memdel((void**)&newpath);
 		lst = lst->next;
@@ -81,8 +79,9 @@ static int			fill_info(t_pls *info, struct dirent *file, \
 	info->name = ft_strdup(file->d_name);
 	if (ft_strchr(flags, 'l'))
 	{
-		tmp = ft_strjoin(((path[ft_strlen(path) - 1] != '/') ? "/" : ""), \
-		info->name);
+		if (!(tmp = ft_strjoin(((path[ft_strlen(path) - 1] != '/') ? "/" : ""), \
+		info->name)))
+			errors(0, 0);
 		newpath = ft_strjoin(path, tmp);
 		ft_memdel((void**)&tmp);
 		lstat(newpath, &stats);
@@ -93,6 +92,7 @@ static int			fill_info(t_pls *info, struct dirent *file, \
 		grp = getgrgid(stats.st_gid);
 		info->group = ft_strdup(grp->gr_name);
 		info->size = stats.st_size;
+		info->blocks = stats.st_blocks;
 		info->date = stats.st_mtime;
 		ft_memdel((void**)&newpath);
 	}
@@ -113,15 +113,18 @@ t_list				*ft_ls_back(const char *path, const char *flags)
 		errors(0, path);
 	while ((file = readdir(dirp)))
 	{
-		if (!(info = ft_memalloc(sizeof(t_pls))) || \
-		fill_info(info, file, flags, path) || \
-		!(tmp = ft_lstnew(info, sizeof(t_pls))))
-			errors(0, 0);
-		ft_memdel((void**)&info);
-		if (!lst)
-			lst = tmp;
-		else
-			ft_lstaddend(&lst, tmp);
+		if ((file->d_name)[0] != '.' || ft_strchr(flags, 'a'))
+		{
+			if (!(info = ft_memalloc(sizeof(t_pls))) || \
+			fill_info(info, file, flags, path) || \
+			!(tmp = ft_lstnew(info, sizeof(t_pls))))
+				errors(0, 0);
+			ft_memdel((void**)&info);
+			if (!lst)
+				lst = tmp;
+			else
+				ft_lstaddend(&lst, tmp);
+		}
 	}
 	(void)closedir(dirp);
 	return (lst);
