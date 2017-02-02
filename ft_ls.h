@@ -6,7 +6,7 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/01 21:27:06 by agrumbac          #+#    #+#             */
-/*   Updated: 2017/02/02 11:57:59 by agrumbac         ###   ########.fr       */
+/*   Updated: 2017/02/02 15:04:38 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@
 
 typedef struct		s_pls
 {
-	char			*mode;
+	char			mode[15];
 	int				links;
 	char			*own;
 	char			*group;
@@ -40,8 +40,7 @@ typedef struct		s_pls
 void				ft_ls(const char *path, const char *flags);
 void				errors(const int error, const char *letter);
 t_list				*ft_ls_back(const char *path, const char *flags);
-void				ft_ls_front(const t_list *lst, const char *path, \
-						const char *flags);
+void				ft_ls_front(const t_list *lst, const char *flags);
 void				ft_ls_rec(const t_list *lst, const char *path, \
 					const char *flags);
 

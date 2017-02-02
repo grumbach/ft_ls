@@ -6,7 +6,7 @@
 #    By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/01/11 00:03:30 by agrumbac          #+#    #+#              #
-#    Updated: 2017/02/02 03:38:08 by agrumbac         ###   ########.fr        #
+#    Updated: 2017/02/02 15:15:52 by agrumbac         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,13 +27,13 @@ all:${NAME}
 ${NAME}: ${OBJ}
 	@make -C libft/
 	@echo Compiling ${NAME}
-	@${CC} ${CFLAGS} -I./libft/includes/ -Llibft/ -lft -I. -o $@ $<
+	@${CC} ${CFLAGS} -Ilibft/includes/ -Llibft/ -lft -I. -o $@ ${OBJ}
 	@echo Job\'s done
 
 ${OBJDIR}/%.o : ./srcs/%.c
 	@echo Compiling $@
 	@/bin/mkdir -p ${OBJDIR}
-	@${CC} ${CFLAGS} -I./libft/includes/ -I. -c -o $@ $<
+	@${CC} ${CFLAGS} -Ilibft/includes/ -I. -c -o $@ $<
 
 clean:
 	@echo clean libft...

@@ -6,7 +6,7 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/01 21:26:08 by agrumbac          #+#    #+#             */
-/*   Updated: 2017/02/02 12:16:57 by agrumbac         ###   ########.fr       */
+/*   Updated: 2017/02/02 14:52:16 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,6 @@ static void		free_lst(void *inf, size_t size)
 	info = (t_pls*)inf;
 	if (info)
 	{
-		if (info->mode)
-			free(info->mode);
 		if (info->own)
 			free(info->own);
 		if (info->group)
@@ -73,7 +71,7 @@ void			ft_ls(const char *path, const char *flags)
 
 	ft_printf("====================ft_ls(%s, %s)\n\n", path, flags);
 	lst = ft_ls_back(path, flags);
-	ft_ls_front(lst, path, flags);
+	ft_ls_front(lst, flags);
 	if (ft_strchr(flags, 'R'))
 		ft_ls_rec(lst, path, flags);
 	ft_lstdel(&lst, &free_lst);
