@@ -6,62 +6,74 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/01 21:26:08 by agrumbac          #+#    #+#             */
-/*   Updated: 2017/02/02 05:55:08 by agrumbac         ###   ########.fr       */
+/*   Updated: 2017/02/02 11:33:03 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-int				errors(int error, const char *letter)
+void			errors(int error, const char *letter)
 {
-	if (error == 0)
+	if (error == 1)
 	{
-		ft_putstr_fd("ls: illegal option -- ", 2);
+		ft_putstr_fd("ft_ls: illegal option -- ", 2);
 		ft_putstr_fd(letter, 2);
-		ft_putstr_fd("\nusage: ls [-"LS_FLAGS"] [file ...]\n", 2);
+		ft_putstr_fd("\nusage: ft_ls [-"LS_FLAGS"] [file ...]\n", 2);
+	}
+	else if (letter)
+	{
+		ft_putstr_fd("ft_ls: ", 2);
+		ft_putstr_fd(letter, 2);
+		ft_putstr_fd(": ", 2);
+		ft_putendl_fd(strerror(errno), 2);
 	}
 	else
-		ft_putstr_fd("error\n", 2);
+		ft_putendl_fd(strerror(errno), 2);
 	exit(-1);
 }
 
-static void		free_info(t_pls info)
+static void		free_lst(void *inf, size_t size)
 {
-	if (info.mode)
-		free(info.mode);
-	if (info.own)
-		free(info.mode);
-	if (info.group)
-		free(info.mode);
-	if (info.name)
-		free(info.mode);
+	t_pls		*info;
+
+	(void)size;
+	info = (t_pls*)inf;
+	if (info)
+	{
+		if (info->mode)
+			free(info->mode);
+		if (info->own)
+			free(info->own);
+		if (info->group)
+			free(info->group);
+		if (info->name)
+			free(info->name);
+		free(info);
+	}
 }
 
 static void		setflags(char *flags, const char *format)
 {
 	int			flags_count;
 
-	flags_count = 0;
-	ft_printf("flags : {%s}\n", format);
+	flags_count = ft_strlen(flags);
 	while (*format)
 	{
 		if (ft_strchr(LS_FLAGS, *format) && !ft_strchr(flags, *format))
 			flags[flags_count++] = *format;
 		else
-			errors(0, (char[2]){(*format), '\0'});
+			errors(1, (char[2]){(*format), '\0'});
 		format++;
 	}
 }
 
 static void		ft_ls(const char *path, const char *flags)
 {
-	t_pls		info;
+	t_list		*lst;
 
-	ft_bzero(&info, sizeof(t_pls));
-	ft_printf("path = {%s}, flags = {%s}\n", path, flags);
-	// ft_ls_back(&info);
-	// ft_ls_front(info);
-	free_info(info);
+	lst = ft_ls_back(path, flags);
+	ft_ls_front(lst, path, flags);
+	ft_lstdel(&lst, &free_lst);
 }
 
 int				main(int ac, char **av)
@@ -73,15 +85,19 @@ int				main(int ac, char **av)
 	ft_bzero(&flags, ft_strlen(LS_FLAGS));
 	while (i < ac)
 	{
-		if (i == 1 && av[1][0] == '-' && av[1][1])
-			setflags(flags, av[1] + 1);
+		if (av[i][0] == '-' && av[i][1])
+			setflags(flags, av[i] + 1);
 		else
-			ft_ls(av[i], flags);
+			break ;
 		i++;
 	}
-	if (i == 2 && flags[0])
-		i--;
-	if (i == 1)
+	if (i < ac)
+		while (i < ac)
+		{
+			ft_ls(av[i], flags);
+			i++;
+		}
+	else
 		ft_ls(".", flags);
 	return (0);
 }

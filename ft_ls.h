@@ -6,7 +6,7 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/01 21:27:06 by agrumbac          #+#    #+#             */
-/*   Updated: 2017/02/02 05:50:11 by agrumbac         ###   ########.fr       */
+/*   Updated: 2017/02/02 10:06:33 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,16 @@
 
 # include "libft.h"
 # include "ft_printf.h"
+# include <time.h>
+# include <errno.h>
+# include <sys/stat.h>
+# include <sys/types.h>
+# include <pwd.h>
+# include <uuid/uuid.h>
+# include <grp.h>
+# include <dirent.h>
 
-typedef struct		s_date
-{
-	int				month;
-	int				day;
-	int				hour;
-	int				minute;
-}					t_date;
+# define LS_FLAGS "GMRaflrt1"
 
 typedef struct		s_pls
 {
@@ -30,24 +32,14 @@ typedef struct		s_pls
 	int				links;
 	char			*own;
 	char			*group;
-	long			size;
-	t_date			date;
+	long long		size;
+	long			date;
 	char			*name;
 }					t_pls;
 
-# define LS_FLAGS "GMRaflrt1"
-
-# define MONTH1 "Jan"
-# define MONTH2 "Feb"
-# define MONTH3 "Mar"
-# define MONTH4 "Apr"
-# define MONTH5 "May"
-# define MONTH6 "Jun"
-# define MONTH7 "Jul"
-# define MONTH8 "Aug"
-# define MONTH9 "Sep"
-# define MONTH10 "Oct"
-# define MONTH11 "Nov"
-# define MONTH12 "Dec"
+void				errors(const int error, const char *letter);
+t_list				*ft_ls_back(const char *path, const char *flags);
+void				ft_ls_front(const t_list *lst, const char *path, \
+						const char *flags);
 
 #endif
