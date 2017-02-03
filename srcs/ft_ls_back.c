@@ -6,7 +6,7 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/02 02:53:36 by agrumbac          #+#    #+#             */
-/*   Updated: 2017/02/02 19:01:26 by agrumbac         ###   ########.fr       */
+/*   Updated: 2017/02/03 23:15:54 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,19 +42,19 @@ void			ft_ls_rec(const t_list *lst, const char *path, \
 
 static void		modeguy(struct stat stats, char *mode)
 {
-	if (S_IFREG & (stats.st_mode))
+	if (S_IFREG >> 9 == (stats.st_mode >> 9))
 		*mode++ = '-';
-	else if (S_IFCHR & (stats.st_mode))
+	else if (S_IFCHR >> 9 == (stats.st_mode >> 9))
 		*mode++ = 'c';
-	else if (S_IFIFO & (stats.st_mode))
+	else if (S_IFIFO >> 9 == (stats.st_mode >> 9))
 		*mode++ = 'p';
-	else if (S_IFDIR & (stats.st_mode))
+	else if (S_IFDIR >> 9 == (stats.st_mode >> 9))
 		*mode++ = 'd';
-	else if (S_IFLNK & (stats.st_mode))
+	else if (S_IFLNK >> 9 == (stats.st_mode >> 9))
 		*mode++ = 'l';
-	else if (S_IFBLK & (stats.st_mode))
+	else if (S_IFBLK >> 9 == (stats.st_mode >> 9))
 		*mode++ = 'b';
-	else if (S_IFSOCK & (stats.st_mode))
+	else if (S_IFSOCK >> 9 == (stats.st_mode >> 9))
 		*mode++ = 's';
 	*mode++ = (stats.st_mode & S_IRUSR ? 'r' : '-');
 	*mode++ = (stats.st_mode & S_IWUSR ? 'w' : '-');
