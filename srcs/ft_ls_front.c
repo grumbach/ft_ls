@@ -6,7 +6,7 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/02 02:53:24 by agrumbac          #+#    #+#             */
-/*   Updated: 2017/02/02 19:03:14 by agrumbac         ###   ########.fr       */
+/*   Updated: 2017/02/03 23:32:45 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,4 +71,9 @@ void				ft_ls_front(const t_list *lst, const char *flags)
 			ft_printf("%s\n", info->name);
 		lst = lst->next;
 	}
+}
+
+void				ft_ls_print_path(const char *path)
+{
+	ft_printf("\n%s:\n", path);
 }
