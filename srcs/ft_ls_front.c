@@ -6,7 +6,7 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/02 02:53:24 by agrumbac          #+#    #+#             */
-/*   Updated: 2017/02/03 23:32:45 by agrumbac         ###   ########.fr       */
+/*   Updated: 2017/02/04 00:14:36 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,8 @@ void				ft_ls_front(const t_list *lst, const char *flags)
 	ft_bzero(padd, sizeof(padd));
 	if (ft_strchr(flags, 'l'))
 	{
-		ft_printf("total %lld\n", total_block(lst));
+		if (((t_pls*)(lst->content))->not_a_dir == 0)
+			ft_printf("total %lld\n", total_block(lst));
 		padding_tool(lst, padd);
 	}
 	while (lst)

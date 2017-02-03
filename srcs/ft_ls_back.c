@@ -6,7 +6,7 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/02 02:53:36 by agrumbac          #+#    #+#             */
-/*   Updated: 2017/02/03 23:39:34 by agrumbac         ###   ########.fr       */
+/*   Updated: 2017/02/04 00:15:19 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,9 +96,29 @@ static int		fill_info(t_pls *info, struct dirent *file, const char *path)
 	return (0);
 }
 
-not_a_dir(const char *path, const char *flags)
+static t_list	*not_a_dir(const char *name, const char *path)
 {
-	return ((t_list*)errors(0, path));
+	t_list				*lst;
+	t_pls				*info;
+	DIR					*dirp;
+	struct dirent		*file;
+
+	if (!(dirp = opendir(path)))
+		return ((t_list*)errors(0, path));
+	while ((file = readdir(dirp)))
+	{
+		if (file->d_namlen == ft_strlen(name) && !ft_strcmp(file->d_name, name))
+		{
+			if (!(info = ft_memalloc(sizeof(t_pls))) || \
+				fill_info(info, file, path) || \
+				!(lst = ft_lstnew(info, sizeof(t_pls))))
+				errors(0, 0);
+			ft_memdel((void**)&info);
+			((t_pls*)(lst->content))->not_a_dir = 1;
+		}
+	}
+	(void)closedir(dirp);
+	return (lst);
 }
 
 t_list			*ft_ls_back(const char *path, const char *flags)
@@ -111,13 +131,13 @@ t_list			*ft_ls_back(const char *path, const char *flags)
 
 	lst = NULL;
 	if (!(dirp = opendir(path)))
-		not_a_dir(path, flags);
+		return (not_a_dir(path, "."));
 	while ((file = readdir(dirp)))
 		if ((file->d_name)[0] != '.' || ft_strchr(flags, 'a'))
 		{
 			if (!(info = ft_memalloc(sizeof(t_pls))) || \
-			fill_info(info, file, path) || \
-			!(tmp = ft_lstnew(info, sizeof(t_pls))))
+				fill_info(info, file, path) || \
+				!(tmp = ft_lstnew(info, sizeof(t_pls))))
 				errors(0, 0);
 			ft_memdel((void**)&info);
 			if (!lst)

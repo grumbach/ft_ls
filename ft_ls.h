@@ -6,7 +6,7 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/01 21:27:06 by agrumbac          #+#    #+#             */
-/*   Updated: 2017/02/03 23:34:34 by agrumbac         ###   ########.fr       */
+/*   Updated: 2017/02/04 00:10:26 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ typedef struct		s_pls
 	long long		blocks;
 	long			date;
 	char			*name;
+	int				not_a_dir;
 }					t_pls;
 
 void				ft_ls(const char *path, const char *flags);
