@@ -6,7 +6,7 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/02 02:53:36 by agrumbac          #+#    #+#             */
-/*   Updated: 2017/02/03 23:32:09 by agrumbac         ###   ########.fr       */
+/*   Updated: 2017/02/03 23:39:34 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,11 @@ static int		fill_info(t_pls *info, struct dirent *file, const char *path)
 	return (0);
 }
 
+not_a_dir(const char *path, const char *flags)
+{
+	return ((t_list*)errors(0, path));
+}
+
 t_list			*ft_ls_back(const char *path, const char *flags)
 {
 	t_list				*lst;
@@ -106,7 +111,7 @@ t_list			*ft_ls_back(const char *path, const char *flags)
 
 	lst = NULL;
 	if (!(dirp = opendir(path)))
-		return ((t_list*)errors(0, path));
+		not_a_dir(path, flags);
 	while ((file = readdir(dirp)))
 		if ((file->d_name)[0] != '.' || ft_strchr(flags, 'a'))
 		{
