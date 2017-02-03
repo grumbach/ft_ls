@@ -6,7 +6,7 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/02 02:53:36 by agrumbac          #+#    #+#             */
-/*   Updated: 2017/02/04 00:15:19 by agrumbac         ###   ########.fr       */
+/*   Updated: 2017/02/04 00:17:47 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,7 @@ static t_list	*not_a_dir(const char *name, const char *path)
 	DIR					*dirp;
 	struct dirent		*file;
 
+	lst = NULL;
 	if (!(dirp = opendir(path)))
 		return ((t_list*)errors(0, path));
 	while ((file = readdir(dirp)))
@@ -117,6 +118,8 @@ static t_list	*not_a_dir(const char *name, const char *path)
 			((t_pls*)(lst->content))->not_a_dir = 1;
 		}
 	}
+	if (!lst)
+		return ((t_list*)errors(0, name));
 	(void)closedir(dirp);
 	return (lst);
 }
