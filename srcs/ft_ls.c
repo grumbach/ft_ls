@@ -6,7 +6,7 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/01 21:26:08 by agrumbac          #+#    #+#             */
-/*   Updated: 2017/02/02 18:42:06 by agrumbac         ###   ########.fr       */
+/*   Updated: 2017/02/04 05:56:00 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,11 +103,7 @@ int				main(int ac, char **av)
 		i++;
 	}
 	if (i < ac)
-		while (i < ac)
-		{
-			ft_ls(av[i], flags);
-			i++;
-		}
+		ft_ls_args(ac, av, i, flags);
 	else
 		ft_ls(".", flags);
 	return (0);
