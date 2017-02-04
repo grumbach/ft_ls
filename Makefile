@@ -6,7 +6,7 @@
 #    By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/01/11 00:03:30 by agrumbac          #+#    #+#              #
-#    Updated: 2017/02/04 05:55:45 by agrumbac         ###   ########.fr        #
+#    Updated: 2017/02/04 15:56:00 by agrumbac         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,7 +48,7 @@ fclean: clean
 	@/bin/rm -f ${NAME} test
 
 test:
-	@${CC} -I./libft/includes/ -Llibft/ -lft -I. -o ${NAME} \
+	@${CC} -I./libft/includes/ -Llibft/ -lft -I. -g -o ${NAME} \
 	$(addprefix srcs/, ${SRC})
 
 re: fclean all
