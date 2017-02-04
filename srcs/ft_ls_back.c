@@ -6,7 +6,7 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/02 02:53:36 by agrumbac          #+#    #+#             */
-/*   Updated: 2017/02/04 00:17:47 by agrumbac         ###   ########.fr       */
+/*   Updated: 2017/02/04 05:35:00 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void			ft_ls_rec(const t_list *lst, const char *path, \
 			if (ft_strcmp(((t_pls*)(lst->content))->name, "..") && \
 				ft_strcmp(((t_pls*)(lst->content))->name, "."))
 			{
-				ft_ls_print_path(newpath);
+				ft_ls_print_path(newpath, 0, 0, 0);
 				ft_ls(newpath, flags);
 			}
 			(void)closedir(dirp);
