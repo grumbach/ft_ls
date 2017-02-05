@@ -6,7 +6,7 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/02 15:48:29 by agrumbac          #+#    #+#             */
-/*   Updated: 2017/02/02 17:10:12 by agrumbac         ###   ########.fr       */
+/*   Updated: 2017/02/05 14:50:54 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ static int			sort_time(void *a, void *b)
 {
 	if (((t_pls*)a)->date < ((t_pls*)b)->date)
 		return (0);
+	if (((t_pls*)a)->date == ((t_pls*)b)->date)
+		return (sort_ascii(a, b));
 	return (1);
 }
 
@@ -37,6 +39,8 @@ static int			sort_rev_time(void *a, void *b)
 {
 	if (((t_pls*)a)->date > ((t_pls*)b)->date)
 		return (0);
+	if (((t_pls*)a)->date == ((t_pls*)b)->date)
+		return (sort_rev_ascii(a, b));
 	return (1);
 }
 
