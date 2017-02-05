@@ -6,7 +6,7 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/01 21:26:08 by agrumbac          #+#    #+#             */
-/*   Updated: 2017/02/05 16:24:24 by agrumbac         ###   ########.fr       */
+/*   Updated: 2017/02/05 18:49:26 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,26 +71,18 @@ static void		setflags(char *flags, const char *format)
 		flags[flags_count++] = 'a';
 }
 
-void			ft_ls(const char *path, const char *flags)
+void			ft_ls(const char *path, const char *flags, int args)
 {
-	static int	i = -1;
 	t_list		*lst;
-	t_pls		*info;
 
-	i++;
 	lst = ft_ls_back(path, flags);
 	if (lst)
 	{
-		info = (t_pls*)(lst->content);
-		if (!i)
-			ft_ls_print_path(path, (t_list*)1, 0, 0);
-		else if (info->not_a_dir == 0)
-			ft_ls_print_path(path, 0, 0, 0);
 		lst = ft_ls_sort(lst, flags);
-		ft_ls_front(lst, flags);
+		ft_ls_front(lst, flags, path, args);
 	}
 	if (ft_strchr(flags, 'R'))
-		ft_ls_rec(lst, path, flags);
+		ft_ls_rec(lst, path, flags, args);
 	if (lst)
 		ft_lstdel(&lst, &free_lst);
 }
@@ -113,6 +105,6 @@ int				main(int ac, char **av)
 	if (i < ac)
 		ft_ls_args(ac, av, i, flags);
 	else
-		ft_ls(".", flags);
+		ft_ls(".", flags, 0);
 	return (0);
 }

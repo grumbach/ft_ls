@@ -6,7 +6,7 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/02 02:53:24 by agrumbac          #+#    #+#             */
-/*   Updated: 2017/02/05 16:22:14 by agrumbac         ###   ########.fr       */
+/*   Updated: 2017/02/05 19:14:03 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,11 +63,9 @@ static char			*date_time(long date_n)
 void				ft_ls_print_path(const char *path, const t_list *lst, \
 					uint *padd, const char *flags)
 {
-	if (!flags && !lst)
+	if (!flags && padd[ARGS] > 1 && ft_ls_error_file_dir(path) == 3)
 		ft_printf("\n%s:\n", path);
-	else if (!flags && lst)
-		ft_printf("%s:\n", path);
-	if (flags)
+	else if (flags)
 	{
 		if (ft_strchr(flags, 'l'))
 		{
@@ -78,7 +76,8 @@ void				ft_ls_print_path(const char *path, const t_list *lst, \
 	}
 }
 
-void				ft_ls_front(const t_list *lst, const char *flags)
+void				ft_ls_front(const t_list *lst, const char *flags, \
+					const char *path, int args)
 {
 	t_pls				*info;
 	char				*date;
@@ -86,6 +85,8 @@ void				ft_ls_front(const t_list *lst, const char *flags)
 
 	info = (t_pls*)(lst->content);
 	ft_bzero(padd, sizeof(padd));
+	padd[ARGS] = (uint)args;
+	ft_ls_print_path(path, lst, padd, 0);
 	ft_ls_print_path(0, lst, padd, flags);
 	while (lst)
 	{

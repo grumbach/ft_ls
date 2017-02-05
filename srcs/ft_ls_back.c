@@ -6,14 +6,14 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/02 02:53:36 by agrumbac          #+#    #+#             */
-/*   Updated: 2017/02/05 16:15:49 by agrumbac         ###   ########.fr       */
+/*   Updated: 2017/02/05 18:29:23 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
 void			ft_ls_rec(const t_list *lst, const char *path, \
-				const char *flags)
+				const char *flags, int args)
 {
 	DIR					*dirp;
 	char				*newpath;
@@ -30,7 +30,7 @@ void			ft_ls_rec(const t_list *lst, const char *path, \
 		{
 			if (ft_strcmp(((t_pls*)(lst->content))->name, "..") && \
 				ft_strcmp(((t_pls*)(lst->content))->name, "."))
-				ft_ls(newpath, flags);
+				ft_ls(newpath, flags, args);
 			(void)closedir(dirp);
 		}
 		ft_memdel((void**)&newpath);
