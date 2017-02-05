@@ -6,7 +6,7 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/02 02:53:24 by agrumbac          #+#    #+#             */
-/*   Updated: 2017/02/04 15:39:57 by agrumbac         ###   ########.fr       */
+/*   Updated: 2017/02/05 16:22:14 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ void				ft_ls_front(const t_list *lst, const char *flags)
 	char				*date;
 	unsigned int		padd[10];
 
+	info = (t_pls*)(lst->content);
 	ft_bzero(padd, sizeof(padd));
 	ft_ls_print_path(0, lst, padd, flags);
 	while (lst)

@@ -6,7 +6,7 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/01 21:26:08 by agrumbac          #+#    #+#             */
-/*   Updated: 2017/02/04 05:56:00 by agrumbac         ###   ########.fr       */
+/*   Updated: 2017/02/05 16:24:24 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,11 +73,19 @@ static void		setflags(char *flags, const char *format)
 
 void			ft_ls(const char *path, const char *flags)
 {
+	static int	i = -1;
 	t_list		*lst;
+	t_pls		*info;
 
+	i++;
 	lst = ft_ls_back(path, flags);
 	if (lst)
 	{
+		info = (t_pls*)(lst->content);
+		if (!i)
+			ft_ls_print_path(path, (t_list*)1, 0, 0);
+		else if (info->not_a_dir == 0)
+			ft_ls_print_path(path, 0, 0, 0);
 		lst = ft_ls_sort(lst, flags);
 		ft_ls_front(lst, flags);
 	}

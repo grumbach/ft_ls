@@ -6,7 +6,7 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/04 05:50:09 by agrumbac          #+#    #+#             */
-/*   Updated: 2017/02/05 15:12:59 by agrumbac         ###   ########.fr       */
+/*   Updated: 2017/02/05 16:12:36 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,17 @@ static int		is_error_file_dir(const char *path)
 
 static int		sort_args(void *a, void *b)
 {
+	int			type_a;
+	int			type_b;
+
+	type_a = is_error_file_dir((char*)a);
+	type_b = is_error_file_dir((char*)b);
+	if (type_a > type_b)
+		return (0);
+	else if (type_a < type_b)
+		return (1);
+	else if (ft_strcmp((char*)a, (char*)b) > 0)
+		return (0);
 	return (1);
 }
 
@@ -64,8 +75,8 @@ void			ft_ls_args(int ac, char **av, int i, const char *flags)
 			ft_lstaddend(&lst, tmp);
 		i++;
 	}
-	tmp = lst;
 	lst = ft_lstsort(lst, &sort_args);
+	tmp = lst;
 	while (tmp)
 	{
 		ft_ls((char*)(tmp->content), flags);
