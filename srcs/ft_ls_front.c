@@ -6,7 +6,7 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/02 02:53:24 by agrumbac          #+#    #+#             */
-/*   Updated: 2017/02/05 19:14:03 by agrumbac         ###   ########.fr       */
+/*   Updated: 2017/02/07 00:13:32 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,16 @@ static char			*date_time(long date_n)
 void				ft_ls_print_path(const char *path, const t_list *lst, \
 					uint *padd, const char *flags)
 {
+	static int		i = -1;
+
+	i++;
 	if (!flags && padd[ARGS] > 1 && ft_ls_error_file_dir(path) == 3)
-		ft_printf("\n%s:\n", path);
+	{
+		if (i)
+			ft_printf("\n%s:\n", path);
+		else
+			ft_printf("%s:\n", path);
+	}
 	else if (flags)
 	{
 		if (ft_strchr(flags, 'l'))
