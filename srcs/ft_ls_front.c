@@ -6,7 +6,7 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/02 02:53:24 by agrumbac          #+#    #+#             */
-/*   Updated: 2017/02/07 02:08:35 by agrumbac         ###   ########.fr       */
+/*   Updated: 2017/02/07 03:57:48 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,25 @@
 
 static void			padding_tool(const t_list *lst, uint *pd)
 {
+	t_pls			*info;
+
+	pd[MAJ] = 0;
 	while (lst)
 	{
-		pd[MODE] = ft_strlen(((t_pls*)(lst->content))->mode) > pd[MODE] \
-		? ft_strlen(((t_pls*)(lst->content))->mode) : pd[MODE];
-		pd[LNKS] = (uint)ft_intlen(((t_pls*)(lst->content))->links) > pd[LNKS] \
-		? (uint)ft_intlen(((t_pls*)(lst->content))->links) : pd[LNKS];
-		pd[OWN] = ft_strlen(((t_pls*)(lst->content))->own) > pd[OWN] \
-		? ft_strlen(((t_pls*)(lst->content))->own) : pd[OWN];
-		pd[GROUP] = ft_strlen(((t_pls*)(lst->content))->group) > pd[GROUP] \
-		? ft_strlen(((t_pls*)(lst->content))->group) : pd[GROUP];
-		pd[SIZE] = (uint)ft_intlen(((t_pls*)(lst->content))->size) > pd[SIZE] \
-		? (uint)ft_intlen(((t_pls*)(lst->content))->size) : pd[SIZE];
+		info = (t_pls*)(lst->content);
+		pd[MODE] = ft_strlen(info->mode) > pd[MODE] \
+		? ft_strlen(info->mode) : pd[MODE];
+		pd[LNKS] = (uint)ft_intlen(info->links) > pd[LNKS] \
+		? (uint)ft_intlen(info->links) : pd[LNKS];
+		pd[OWN] = ft_strlen(info->own) > pd[OWN] \
+		? ft_strlen(info->own) : pd[OWN];
+		pd[GROUP] = ft_strlen(info->group) > pd[GROUP] \
+		? ft_strlen(info->group) : pd[GROUP];
+		pd[SIZE] = (uint)ft_intlen(info->size) > pd[SIZE] \
+		? (uint)ft_intlen(info->size) : pd[SIZE];
+		if (info->major > 0)
+			pd[MAJ] = (uint)ft_intlen(info->major) > pd[MAJ] \
+			? (uint)ft_intlen(info->major) : pd[MAJ];
 		lst = lst->next;
 	}
 	pd[DATE] = 12;
@@ -102,10 +109,18 @@ void				ft_ls_front(const t_list *lst, const char *flags, \
 		if (ft_strchr(flags, 'l'))
 		{
 			date = date_time(info->date);
-			ft_printf("%-*s %*d %-*s %-*s %*lld %-*s %s\n", padd[MODE] + 1, \
-			info->mode, padd[LNKS], info->links, padd[OWN] + 1, info->own, \
-			padd[GROUP], info->group, padd[SIZE] + 1, info->size, padd[DATE], \
-			date, info->name);
+			ft_printf("%-*s %*d %-*s %-*s ", padd[MODE] + 1, info->mode, \
+			padd[LNKS], info->links, padd[OWN] + 1, info->own, padd[GROUP], \
+			info->group);
+			if (info->major >= 0)
+				ft_printf("%*d%.*s%*lld", padd[MAJ] + 2, info->major, \
+				(info->major >= 0 ? -1 : 0), ", ", padd[SIZE], info->size);
+			else
+				ft_printf("%*lld", padd[MAJ] + (padd[MAJ] ? 4 : 1) + \
+				padd[SIZE], info->size);
+			ft_printf(" %-*s %s%.*s%.*s\n", padd[DATE], date, info->name, \
+			(info->linkpath ? -1 : 0), " -> ", (info->linkpath ? -1 : 0), \
+			info->linkpath);
 			ft_memdel((void**)&date);
 		}
 		else

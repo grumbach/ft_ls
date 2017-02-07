@@ -6,7 +6,7 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/02 02:53:36 by agrumbac          #+#    #+#             */
-/*   Updated: 2017/02/07 02:15:46 by agrumbac         ###   ########.fr       */
+/*   Updated: 2017/02/07 03:52:48 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,8 @@ static void		fill_assist(t_pls *info, const char *newpath)
 	ft_bzero(&buf, FILENAMEMAXLEN + 1);
 	kneth = readlink(newpath, buf, FILENAMEMAXLEN);
 	info->linkpath = (kneth == -1 ? NULL : ft_strdup(buf));
-	if (info->mode[0] == 'c')
+	info->major = -1;
+	if (info->mode[0] == 'c' || info->mode[0] == 'b')
 	{
 		stat(newpath, &sym_stat);
 		denz = sym_stat.st_rdev;
