@@ -6,7 +6,7 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/02 02:53:36 by agrumbac          #+#    #+#             */
-/*   Updated: 2017/02/07 01:21:55 by agrumbac         ###   ########.fr       */
+/*   Updated: 2017/02/07 02:15:46 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,31 @@ static void		modeguy(struct stat stats, char *mode)
 	*mode++ = (stats.st_mode & S_IXOTH ? 'x' : '-');
 }
 
-static int		fill_info(t_pls *info, struct dirent *file, const char *path)
+static void		fill_assist(t_pls *info, const char *newpath)
+{
+	char				buf[FILENAMEMAXLEN + 1];
+	ssize_t				kneth;
+	int					denz;
+	struct stat			sym_stat;
+
+	kneth = 0;
+	denz = 0;
+	ft_bzero(&buf, FILENAMEMAXLEN + 1);
+	kneth = readlink(newpath, buf, FILENAMEMAXLEN);
+	info->linkpath = (kneth == -1 ? NULL : ft_strdup(buf));
+	if (info->mode[0] == 'c')
+	{
+		stat(newpath, &sym_stat);
+		denz = sym_stat.st_rdev;
+		while ((denz / 256) > 0)
+			denz = denz / 256;
+		info->major = denz;
+		info->size = sym_stat.st_rdev % 256;
+	}
+}
+
+static int		fill_info(t_pls *info, const struct dirent *file, \
+				const char *path)
 {
 	struct stat			stats;
 	struct passwd		*pwd;
@@ -63,6 +87,7 @@ static int		fill_info(t_pls *info, struct dirent *file, const char *path)
 	info->size = stats.st_size;
 	info->blocks = stats.st_blocks;
 	info->date = stats.st_mtime;
+	fill_assist(info, newpath);
 	ft_memdel((void**)&newpath);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/01 21:26:08 by agrumbac          #+#    #+#             */
-/*   Updated: 2017/02/05 18:49:26 by agrumbac         ###   ########.fr       */
+/*   Updated: 2017/02/07 02:11:10 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ static void		free_lst(void *inf, size_t size)
 			free(info->group);
 		if (info->name)
 			free(info->name);
+		if (info->linkpath)
+			free(info->linkpath);
 		free(info);
 	}
 }

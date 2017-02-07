@@ -6,7 +6,7 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/01 21:27:06 by agrumbac          #+#    #+#             */
-/*   Updated: 2017/02/07 01:21:33 by agrumbac         ###   ########.fr       */
+/*   Updated: 2017/02/07 01:47:22 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ typedef struct		s_pls
 	int				links;
 	char			*own;
 	char			*group;
+	int				major;
 	long long		size;
 	long long		blocks;
 	long			date;
@@ -58,5 +59,6 @@ long				errors(const int error, const char *letter);
 # define SIZE 4
 # define DATE 5
 # define ARGS 9
+# define FILENAMEMAXLEN 255
 
 #endif

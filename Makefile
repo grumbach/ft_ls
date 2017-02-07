@@ -6,7 +6,7 @@
 #    By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/01/11 00:03:30 by agrumbac          #+#    #+#              #
-#    Updated: 2017/02/07 01:19:20 by agrumbac         ###   ########.fr        #
+#    Updated: 2017/02/07 02:22:35 by agrumbac         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,7 +30,7 @@ ${NAME}: ${OBJ}
 	@make -C libft/
 	@echo Compiling ${NAME}
 	@${CC} ${CFLAGS} -Ilibft/includes/ -Llibft/ -lft -I. -o $@ ${OBJ}
-	@echo Job\'s done
+	@echo "\033[32mft_ls is ready!\033[0m"
 
 ${OBJDIR}/%.o : ./srcs/%.c
 	@echo Compiling $@
