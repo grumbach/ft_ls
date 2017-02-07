@@ -6,7 +6,7 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/01 21:26:08 by agrumbac          #+#    #+#             */
-/*   Updated: 2017/02/07 04:18:26 by agrumbac         ###   ########.fr       */
+/*   Updated: 2017/02/07 05:44:55 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ long			errors(int error, const char *letter)
 		ft_putstr_fd("ft_ls: illegal option -- ", 2);
 		ft_putstr_fd(letter, 2);
 		ft_putstr_fd("\nusage: ft_ls [-"LS_FLAGS"] [file ...]\n", 2);
-		exit(-1);
+		exit(1);
 	}
 	else if (letter)
 	{
@@ -31,7 +31,7 @@ long			errors(int error, const char *letter)
 	else
 	{
 		ft_putendl_fd(strerror(errno), 2);
-		exit(-1);
+		exit(1);
 	}
 	return (0);
 }
