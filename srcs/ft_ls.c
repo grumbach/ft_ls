@@ -6,7 +6,7 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/01 21:26:08 by agrumbac          #+#    #+#             */
-/*   Updated: 2017/02/07 05:44:55 by agrumbac         ###   ########.fr       */
+/*   Updated: 2017/02/07 15:48:25 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,20 +82,19 @@ void			ft_ls(const char *path, const char *flags, int args)
 	{
 		lst = ft_ls_sort(lst, flags);
 		ft_ls_front(lst, flags, path, args);
-	}
-	if (ft_strchr(flags, 'R'))
-		ft_ls_rec(lst, path, flags);
-	if (lst)
+		if (ft_strchr(flags, 'R'))
+			ft_ls_rec(lst, path, flags);
 		ft_lstdel(&lst, &free_lst);
+	}
 }
 
 int				main(int ac, char **av)
 {
-	char		flags[ft_strlen(LS_FLAGS)];
+	char		flags[ft_strlen(LS_FLAGS) + 1];
 	int			i;
 
 	i = 1;
-	ft_bzero(&flags, ft_strlen(LS_FLAGS));
+	ft_bzero(&flags, ft_strlen(LS_FLAGS) + 1);
 	while (i < ac)
 	{
 		if (av[i][0] == '-' && av[i][1])

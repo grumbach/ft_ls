@@ -6,7 +6,7 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/04 05:50:09 by agrumbac          #+#    #+#             */
-/*   Updated: 2017/02/07 00:54:32 by agrumbac         ###   ########.fr       */
+/*   Updated: 2017/02/07 15:31:59 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,6 @@ void			ft_ls_args(int ac, char **av, int i, const char *flags)
 {
 	t_list		*lst;
 	t_list		*tmp;
-	int			args;
 
 	lst = NULL;
 	tmp = NULL;
@@ -108,7 +107,6 @@ void			ft_ls_args(int ac, char **av, int i, const char *flags)
 		i++;
 	}
 	lst = ft_lstsort(lst, &sort_args);
-	args = ft_lstsize(lst);
-	ls_caller(lst, flags, args);
+	ls_caller(lst, flags, ft_lstsize(lst));
 	ft_lstdel(&lst, &free_char);
 }
