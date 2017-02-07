@@ -6,37 +6,11 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/02 02:53:36 by agrumbac          #+#    #+#             */
-/*   Updated: 2017/02/05 18:29:23 by agrumbac         ###   ########.fr       */
+/*   Updated: 2017/02/07 01:21:55 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
-
-void			ft_ls_rec(const t_list *lst, const char *path, \
-				const char *flags, int args)
-{
-	DIR					*dirp;
-	char				*newpath;
-	char				*tmp;
-
-	dirp = NULL;
-	while (lst)
-	{
-		if (!(tmp = ft_strjoin("/", ((t_pls*)(lst->content))->name)) || \
-			!(newpath = ft_strjoin(path, tmp)))
-			errors(0, 0);
-		ft_memdel((void**)&tmp);
-		if ((dirp = opendir(newpath)))
-		{
-			if (ft_strcmp(((t_pls*)(lst->content))->name, "..") && \
-				ft_strcmp(((t_pls*)(lst->content))->name, "."))
-				ft_ls(newpath, flags, args);
-			(void)closedir(dirp);
-		}
-		ft_memdel((void**)&newpath);
-		lst = lst->next;
-	}
-}
 
 static void		modeguy(struct stat stats, char *mode)
 {
@@ -74,18 +48,18 @@ static int		fill_info(t_pls *info, struct dirent *file, const char *path)
 	char				*newpath;
 
 	info->name = ft_strdup(file->d_name);
-	if (!(tmp = ft_strjoin(((path[ft_strlen(path) - 1] != '/') ? "/" : ""),\
-	info->name)))
+	if (!(tmp = ft_strjoin(((path[ft_strlen(path) - 1] != '/') ? "/" : ""), \
+		info->name)) || !(newpath = ft_strjoin(path, tmp)))
 		errors(0, 0);
-	newpath = ft_strjoin(path, tmp);
 	ft_memdel((void**)&tmp);
 	lstat(newpath, &stats);
 	modeguy(stats, info->mode);
 	info->links = stats.st_nlink;
 	pwd = getpwuid(stats.st_uid);
-	info->own = ft_strdup(pwd->pw_name);
 	grp = getgrgid(stats.st_gid);
-	info->group = ft_strdup(grp->gr_name);
+	if (!(info->own = ft_strdup(pwd->pw_name)) || \
+		!(info->group = ft_strdup(grp->gr_name)))
+		errors(0, 0);
 	info->size = stats.st_size;
 	info->blocks = stats.st_blocks;
 	info->date = stats.st_mtime;

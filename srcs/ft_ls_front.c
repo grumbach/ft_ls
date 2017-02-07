@@ -6,7 +6,7 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/02 02:53:24 by agrumbac          #+#    #+#             */
-/*   Updated: 2017/02/07 00:13:32 by agrumbac         ###   ########.fr       */
+/*   Updated: 2017/02/07 01:21:46 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ static char			*date_time(long date_n)
 	return (date);
 }
 
-void				ft_ls_print_path(const char *path, const t_list *lst, \
+static void			print_path(const char *path, const t_list *lst, \
 					uint *padd, const char *flags)
 {
 	static int		i = -1;
@@ -94,8 +94,8 @@ void				ft_ls_front(const t_list *lst, const char *flags, \
 	info = (t_pls*)(lst->content);
 	ft_bzero(padd, sizeof(padd));
 	padd[ARGS] = (uint)args;
-	ft_ls_print_path(path, lst, padd, 0);
-	ft_ls_print_path(0, lst, padd, flags);
+	print_path(path, lst, padd, 0);
+	print_path(0, lst, padd, flags);
 	while (lst)
 	{
 		info = (t_pls*)(lst->content);
