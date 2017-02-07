@@ -6,7 +6,7 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/07 01:17:51 by agrumbac          #+#    #+#             */
-/*   Updated: 2017/02/07 04:18:11 by agrumbac         ###   ########.fr       */
+/*   Updated: 2017/02/07 16:44:15 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,9 @@ void			ft_ls_rec(const t_list *lst, const char *path, \
 	DIR					*dirp;
 	char				*newpath;
 	char				*tmp;
+	char				buf[1];
 
+	buf[0] = 0;
 	dirp = NULL;
 	while (lst)
 	{
@@ -29,7 +31,8 @@ void			ft_ls_rec(const t_list *lst, const char *path, \
 		if ((dirp = opendir(newpath)))
 		{
 			if (ft_strcmp(((t_pls*)(lst->content))->name, "..") && \
-				ft_strcmp(((t_pls*)(lst->content))->name, "."))
+				ft_strcmp(((t_pls*)(lst->content))->name, ".") && \
+				readlink(newpath, buf, 1) < 0)
 				ft_ls(newpath, flags, 42);
 			(void)closedir(dirp);
 		}
