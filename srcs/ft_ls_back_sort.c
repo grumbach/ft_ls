@@ -6,7 +6,7 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/02 15:48:29 by agrumbac          #+#    #+#             */
-/*   Updated: 2017/02/07 02:12:17 by agrumbac         ###   ########.fr       */
+/*   Updated: 2017/02/09 19:39:16 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,11 +49,11 @@ t_list				*ft_ls_sort(t_list *lst, const char *flags)
 	if (ft_strchr(flags, 'f'))
 		return (lst);
 	else if (ft_strchr(flags, 'r') && ft_strchr(flags, 't'))
-		return (ft_lstsort(lst, &sort_rev_time));
+		return (ft_ls_listsort(lst, &sort_rev_time));
 	else if (ft_strchr(flags, 't'))
-		return (ft_lstsort(lst, &sort_time));
+		return (ft_ls_listsort(lst, &sort_time));
 	else if (ft_strchr(flags, 'r'))
-		return (ft_lstsort(lst, &sort_rev_ascii));
+		return (ft_ls_listsort(lst, &sort_rev_ascii));
 	else
-		return (ft_lstsort(lst, &sort_ascii));
+		return (ft_ls_listsort(lst, &sort_ascii));
 }

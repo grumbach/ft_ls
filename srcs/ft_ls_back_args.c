@@ -6,7 +6,7 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/04 05:50:09 by agrumbac          #+#    #+#             */
-/*   Updated: 2017/02/07 15:31:59 by agrumbac         ###   ########.fr       */
+/*   Updated: 2017/02/09 19:39:31 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ void			ft_ls_args(int ac, char **av, int i, const char *flags)
 			ft_lstaddend(&lst, tmp);
 		i++;
 	}
-	lst = ft_lstsort(lst, &sort_args);
+	lst = ft_ls_listsort(lst, &sort_args);
 	ls_caller(lst, flags, ft_lstsize(lst));
 	ft_lstdel(&lst, &free_char);
 }
