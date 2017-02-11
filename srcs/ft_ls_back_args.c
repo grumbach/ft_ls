@@ -6,7 +6,7 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/04 05:50:09 by agrumbac          #+#    #+#             */
-/*   Updated: 2017/02/09 19:39:31 by agrumbac         ###   ########.fr       */
+/*   Updated: 2017/02/11 18:44:45 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,26 +15,14 @@
 int				ft_ls_error_file_dir(const char *path)
 {
 	DIR					*dirp;
-	struct dirent		*file;
+	struct stat			stats;
 
 	if (!path)
 		return (1);
 	if ((dirp = opendir(path)))
-	{
-		(void)closedir(dirp);
-		return (3);
-	}
-	else if (!(dirp = opendir(".")))
-		return (1);
-	while ((file = readdir(dirp)))
-	{
-		if (file->d_namlen == ft_strlen(path) && !ft_strcmp(file->d_name, path))
-		{
-			(void)closedir(dirp);
-			return (2);
-		}
-	}
-	(void)closedir(dirp);
+		return (3 + 0 * (int)closedir(dirp));
+	if (stat(path, &stats) != -1 && !(S_ISDIR(stats.st_mode)))
+		return (2);
 	return (1);
 }
 

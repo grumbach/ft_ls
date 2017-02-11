@@ -6,7 +6,7 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/01 21:27:06 by agrumbac          #+#    #+#             */
-/*   Updated: 2017/02/09 19:37:56 by agrumbac         ###   ########.fr       */
+/*   Updated: 2017/02/09 22:34:36 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 # include <grp.h>
 # include <dirent.h>
 
-# define LS_FLAGS "GMRaflrt1"
+# define LS_FLAGS "GRaflrt1"
 
 typedef struct		s_pls
 {

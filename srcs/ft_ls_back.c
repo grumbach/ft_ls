@@ -6,7 +6,7 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/02 02:53:36 by agrumbac          #+#    #+#             */
-/*   Updated: 2017/02/07 03:52:48 by agrumbac         ###   ########.fr       */
+/*   Updated: 2017/02/11 19:29:26 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,7 @@
 
 static void		modeguy(struct stat stats, char *mode)
 {
-	if (S_IFREG >> 9 == (stats.st_mode >> 9))
-		*mode++ = '-';
-	else if (S_IFCHR >> 9 == (stats.st_mode >> 9))
+	if (S_IFCHR >> 9 == (stats.st_mode >> 9))
 		*mode++ = 'c';
 	else if (S_IFIFO >> 9 == (stats.st_mode >> 9))
 		*mode++ = 'p';
@@ -28,6 +26,8 @@ static void		modeguy(struct stat stats, char *mode)
 		*mode++ = 'b';
 	else if (S_IFSOCK >> 9 == (stats.st_mode >> 9))
 		*mode++ = 's';
+	else
+		*mode++ = '-';
 	*mode++ = (stats.st_mode & S_IRUSR ? 'r' : '-');
 	*mode++ = (stats.st_mode & S_IWUSR ? 'w' : '-');
 	*mode++ = (stats.st_mode & S_IXUSR ? 'x' : '-');
@@ -63,7 +63,7 @@ static void		fill_assist(t_pls *info, const char *newpath)
 	}
 }
 
-static int		fill_info(t_pls *info, const struct dirent *file, \
+static int		fill_info(t_pls *info, char *file, \
 				const char *path)
 {
 	struct stat			stats;
@@ -72,7 +72,7 @@ static int		fill_info(t_pls *info, const struct dirent *file, \
 	char				*tmp;
 	char				*newpath;
 
-	info->name = ft_strdup(file->d_name);
+	info->name = file;
 	if (!(tmp = ft_strjoin(((path[ft_strlen(path) - 1] != '/') ? "/" : ""), \
 		info->name)) || !(newpath = ft_strjoin(path, tmp)))
 		errors(0, 0);
@@ -93,27 +93,24 @@ static int		fill_info(t_pls *info, const struct dirent *file, \
 	return (0);
 }
 
-static t_list	*not_a_dir(const char *name, const char *path)
+static t_list	*not_a_dir(const char *name)
 {
 	t_list				*lst;
 	t_pls				*info;
 	DIR					*dirp;
-	struct dirent		*file;
+	struct stat			stats;
 
 	lst = NULL;
-	if (!(dirp = opendir(path)))
-		return ((t_list*)errors(0, path));
-	while ((file = readdir(dirp)))
+	if (!(dirp = opendir(".")))
+		return ((t_list*)errors(0, name));
+	if (stat(name, &stats) != -1 && ft_ls_error_file_dir(name) != 1)
 	{
-		if (file->d_namlen == ft_strlen(name) && !ft_strcmp(file->d_name, name))
-		{
-			if (!(info = ft_memalloc(sizeof(t_pls))) || \
-				fill_info(info, file, path) || \
-				!(lst = ft_lstnew(info, sizeof(t_pls))))
-				errors(0, 0);
-			ft_memdel((void**)&info);
-			((t_pls*)(lst->content))->not_a_dir = 1;
-		}
+		if (!(info = ft_memalloc(sizeof(t_pls))) || \
+			fill_info(info, ft_strdup(name), ".") || \
+			!(lst = ft_lstnew(info, sizeof(t_pls))))
+			errors(0, 0);
+		ft_memdel((void**)&info);
+		((t_pls*)(lst->content))->not_a_dir = 1;
 	}
 	if (!lst)
 		return ((t_list*)errors(0, name));
@@ -131,12 +128,12 @@ t_list			*ft_ls_back(const char *path, const char *flags)
 
 	lst = NULL;
 	if (!(dirp = opendir(path)))
-		return (not_a_dir(path, "."));
+		return (not_a_dir(path));
 	while ((file = readdir(dirp)))
 		if ((file->d_name)[0] != '.' || ft_strchr(flags, 'a'))
 		{
 			if (!(info = ft_memalloc(sizeof(t_pls))) || \
-				fill_info(info, file, path) || \
+				fill_info(info, ft_strdup(file->d_name), path) || \
 				!(tmp = ft_lstnew(info, sizeof(t_pls))))
 				errors(0, 0);
 			ft_memdel((void**)&info);

@@ -6,11 +6,21 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/07 01:17:51 by agrumbac          #+#    #+#             */
-/*   Updated: 2017/02/09 19:41:39 by agrumbac         ###   ########.fr       */
+/*   Updated: 2017/02/11 18:14:23 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
+
+static void		err_patch(DIR *dirp, char *newpath)
+{
+	if (!dirp && errno != ENOTDIR)
+	{
+		ft_printf("\n%s:\n", newpath);
+		errors(0, newpath);
+	}
+	ft_memdel((void**)&newpath);
+}
 
 void			ft_ls_rec(const t_list *lst, const char *path, \
 				const char *flags)
@@ -21,22 +31,23 @@ void			ft_ls_rec(const t_list *lst, const char *path, \
 	char				buf[1];
 
 	buf[0] = 0;
-	dirp = NULL;
 	while (lst)
 	{
+		dirp = NULL;
 		if (!(tmp = ft_strjoin("/", ((t_pls*)(lst->content))->name)) || \
 			!(newpath = ft_strjoin(path, tmp)))
 			errors(0, 0);
 		ft_memdel((void**)&tmp);
 		if ((dirp = opendir(newpath)))
 		{
+			ft_printf("\n%s:\n", newpath);
 			if (ft_strcmp(((t_pls*)(lst->content))->name, "..") && \
 				ft_strcmp(((t_pls*)(lst->content))->name, ".") && \
-				readlink(newpath, buf, 1) < 0)
+				readlink(newpath, buf, 1) == -1)
 				ft_ls(newpath, flags, 42);
 			(void)closedir(dirp);
 		}
-		ft_memdel((void**)&newpath);
+		err_patch(dirp, newpath);
 		lst = lst->next;
 	}
 }

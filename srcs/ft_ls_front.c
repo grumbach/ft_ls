@@ -6,7 +6,7 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/02 02:53:24 by agrumbac          #+#    #+#             */
-/*   Updated: 2017/02/07 04:12:25 by agrumbac         ###   ########.fr       */
+/*   Updated: 2017/02/11 18:15:45 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,8 @@ void				ft_ls_front(const t_list *lst, const char *flags, \
 	info = (t_pls*)(lst->content);
 	ft_bzero(padd, sizeof(padd));
 	padd[ARGS] = (uint)args;
-	print_path(path, lst, padd, 0);
+	if (!ft_strchr(flags, 'R'))
+		print_path(path, lst, padd, 0);
 	print_path(0, lst, padd, flags);
 	while (lst)
 	{
