@@ -6,7 +6,7 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/07 01:17:51 by agrumbac          #+#    #+#             */
-/*   Updated: 2017/02/13 21:07:08 by agrumbac         ###   ########.fr       */
+/*   Updated: 2017/02/13 21:53:40 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,17 +55,18 @@ void			ft_ls_rec(const t_list *lst, const char *path, \
 	buf[0] = 0;
 	while (lst)
 	{
-		dirp = NULL;
 		if (!(tmp = ft_strjoin("/", ((t_pls*)(lst->content))->name)) || \
 			!(newpath = ft_strjoin(path, tmp)))
 			errors(0, 0);
 		ft_memdel((void**)&tmp);
 		if ((dirp = opendir(newpath)))
 		{
-			ft_printf("\n%s:\n", newpath);
 			if (!dotdot(((t_pls*)(lst->content))->name) \
 				&& readlink(newpath, buf, 1) == -1)
+			{
+				ft_printf("\n%s:\n", newpath);
 				ft_ls(newpath, flags, 42);
+			}
 			(void)closedir(dirp);
 		}
 		err_patch(dirp, newpath);

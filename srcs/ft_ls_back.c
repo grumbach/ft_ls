@@ -6,7 +6,7 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/02 02:53:36 by agrumbac          #+#    #+#             */
-/*   Updated: 2017/02/11 19:29:26 by agrumbac         ###   ########.fr       */
+/*   Updated: 2017/02/13 22:19:25 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,13 +54,15 @@ static void		fill_assist(t_pls *info, const char *newpath)
 	info->major = -1;
 	if (info->mode[0] == 'c' || info->mode[0] == 'b')
 	{
-		stat(newpath, &sym_stat);
+		if (stat(newpath, &sym_stat) == -1)
+			errors(0, 0);
 		denz = sym_stat.st_rdev;
 		while ((denz / 256) > 0)
 			denz = denz / 256;
 		info->major = denz;
 		info->size = sym_stat.st_rdev % 256;
 	}
+	ft_memdel((void**)&newpath);
 }
 
 static int		fill_info(t_pls *info, char *file, \
@@ -69,15 +71,16 @@ static int		fill_info(t_pls *info, char *file, \
 	struct stat			stats;
 	struct passwd		*pwd;
 	struct group		*grp;
-	char				*tmp;
+	char				*t;
 	char				*newpath;
 
 	info->name = file;
-	if (!(tmp = ft_strjoin(((path[ft_strlen(path) - 1] != '/') ? "/" : ""), \
-		info->name)) || !(newpath = ft_strjoin(path, tmp)))
-		errors(0, 0);
-	ft_memdel((void**)&tmp);
-	lstat(newpath, &stats);
+	if (!(t = ft_strjoin("/", info->name)) || \
+		!(newpath = ft_strjoin(path, t)))
+		return ((int)errors(0, 0));
+	ft_memdel((void**)&t);
+	if (lstat(newpath, &stats) == -1)
+		return ((int)errors(0, 0));
 	modeguy(stats, info->mode);
 	info->links = stats.st_nlink;
 	pwd = getpwuid(stats.st_uid);
@@ -89,7 +92,6 @@ static int		fill_info(t_pls *info, char *file, \
 	info->blocks = stats.st_blocks;
 	info->date = stats.st_mtime;
 	fill_assist(info, newpath);
-	ft_memdel((void**)&newpath);
 	return (0);
 }
 
