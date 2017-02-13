@@ -6,7 +6,7 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/07 01:17:51 by agrumbac          #+#    #+#             */
-/*   Updated: 2017/02/13 21:01:34 by agrumbac         ###   ########.fr       */
+/*   Updated: 2017/02/13 21:07:08 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,20 +27,19 @@ static int		dotdot(char *path)
 	size_t		len;
 
 	len = ft_strlen(path);
-
 	if (path[len - 1] == '.')
 	{
 		if (len - 1 == 0)
-			return (1);//"."
+			return (1);
 		else if (path[len - 2] == '.')
 		{
 			if (len - 2 == 0)
-				return (1);//".."
+				return (1);
 			else if (path[len - 3] == '/')
-				return (1);//"xxxx/.."
+				return (1);
 		}
 		else if (path[len - 2] == '/')
-			return (1);//"xxxx/."
+			return (1);
 	}
 	return (0);
 }
