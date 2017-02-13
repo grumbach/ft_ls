@@ -6,7 +6,7 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/07 01:17:51 by agrumbac          #+#    #+#             */
-/*   Updated: 2017/02/11 18:14:23 by agrumbac         ###   ########.fr       */
+/*   Updated: 2017/02/13 21:01:34 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,29 @@ static void		err_patch(DIR *dirp, char *newpath)
 		errors(0, newpath);
 	}
 	ft_memdel((void**)&newpath);
+}
+
+static int		dotdot(char *path)
+{
+	size_t		len;
+
+	len = ft_strlen(path);
+
+	if (path[len - 1] == '.')
+	{
+		if (len - 1 == 0)
+			return (1);//"."
+		else if (path[len - 2] == '.')
+		{
+			if (len - 2 == 0)
+				return (1);//".."
+			else if (path[len - 3] == '/')
+				return (1);//"xxxx/.."
+		}
+		else if (path[len - 2] == '/')
+			return (1);//"xxxx/."
+	}
+	return (0);
 }
 
 void			ft_ls_rec(const t_list *lst, const char *path, \
@@ -41,9 +64,8 @@ void			ft_ls_rec(const t_list *lst, const char *path, \
 		if ((dirp = opendir(newpath)))
 		{
 			ft_printf("\n%s:\n", newpath);
-			if (ft_strcmp(((t_pls*)(lst->content))->name, "..") && \
-				ft_strcmp(((t_pls*)(lst->content))->name, ".") && \
-				readlink(newpath, buf, 1) == -1)
+			if (!dotdot(((t_pls*)(lst->content))->name) \
+				&& readlink(newpath, buf, 1) == -1)
 				ft_ls(newpath, flags, 42);
 			(void)closedir(dirp);
 		}
