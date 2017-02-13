@@ -6,7 +6,7 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/02 02:53:36 by agrumbac          #+#    #+#             */
-/*   Updated: 2017/02/13 22:19:25 by agrumbac         ###   ########.fr       */
+/*   Updated: 2017/02/13 22:47:10 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ static void		fill_assist(t_pls *info, const char *newpath)
 	if (info->mode[0] == 'c' || info->mode[0] == 'b')
 	{
 		if (stat(newpath, &sym_stat) == -1)
-			errors(0, 0);
+			return ;
 		denz = sym_stat.st_rdev;
 		while ((denz / 256) > 0)
 			denz = denz / 256;
@@ -80,7 +80,7 @@ static int		fill_info(t_pls *info, char *file, \
 		return ((int)errors(0, 0));
 	ft_memdel((void**)&t);
 	if (lstat(newpath, &stats) == -1)
-		return ((int)errors(0, 0));
+		return ((int)errors(0, newpath));
 	modeguy(stats, info->mode);
 	info->links = stats.st_nlink;
 	pwd = getpwuid(stats.st_uid);
