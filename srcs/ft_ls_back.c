@@ -6,7 +6,7 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/02 02:53:36 by agrumbac          #+#    #+#             */
-/*   Updated: 2017/02/13 22:47:10 by agrumbac         ###   ########.fr       */
+/*   Updated: 2017/02/14 20:13:24 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,16 +72,12 @@ static int		fill_info(t_pls *info, char *file, \
 	struct stat			stats;
 	struct passwd		*pwd;
 	struct group		*grp;
-	char				*t;
-	char				*newpath;
 
 	info->name = file;
-	if (!(t = ft_strjoin("/", info->name)) || \
-		!(newpath = ft_strjoin(path, t)))
+	if (!path)
 		return ((int)errors(0, 0));
-	ft_memdel((void**)&t);
-	if (lstat(newpath, &stats) == -1)
-		return ((int)errors(0, newpath) + fill_assist(info, newpath));
+	if (lstat(path, &stats) == -1)
+		return ((int)errors(0, path) + fill_assist(info, path));
 	modeguy(stats, info->mode);
 	info->links = stats.st_nlink;
 	info->size = stats.st_size;
@@ -89,27 +85,24 @@ static int		fill_info(t_pls *info, char *file, \
 	info->date = stats.st_mtime;
 	if (!(pwd = getpwuid(stats.st_uid)) || \
 		!(grp = getgrgid(stats.st_gid)))
-		return ((int)errors(0, newpath) + fill_assist(info, newpath));
+		return ((int)errors(0, path) + fill_assist(info, path));
 	if (!(info->own = ft_strdup(pwd->pw_name)) || \
 		!(info->group = ft_strdup(grp->gr_name)))
 		errors(0, 0);
-	return (fill_assist(info, newpath));
+	return (fill_assist(info, path));
 }
 
 static t_list	*not_a_dir(const char *name)
 {
 	t_list				*lst;
 	t_pls				*info;
-	DIR					*dirp;
 	struct stat			stats;
 
 	lst = NULL;
-	if (!(dirp = opendir(".")))
-		return ((t_list*)errors(0, name));
 	if (stat(name, &stats) != -1 && ft_ls_error_file_dir(name) != 1)
 	{
 		if (!(info = ft_memalloc(sizeof(t_pls))) || \
-			fill_info(info, ft_strdup(name), ".") || \
+			fill_info(info, ft_strdup(name), ft_strdup(name)) || \
 			!(lst = ft_lstnew(info, sizeof(t_pls))))
 			errors(0, 0);
 		ft_memdel((void**)&info);
@@ -117,7 +110,6 @@ static t_list	*not_a_dir(const char *name)
 	}
 	if (!lst)
 		return ((t_list*)errors(0, name));
-	(void)closedir(dirp);
 	return (lst);
 }
 
@@ -136,7 +128,8 @@ t_list			*ft_ls_back(const char *path, const char *flags)
 		if ((file->d_name)[0] != '.' || ft_strchr(flags, 'a'))
 		{
 			if (!(info = ft_memalloc(sizeof(t_pls))) || \
-				fill_info(info, ft_strdup(file->d_name), path) || \
+				fill_info(info, ft_strdup(file->d_name), \
+				ft_strnjoin(3, path, "/", file->d_name)) || \
 				!(tmp = ft_lstnew(info, sizeof(t_pls))))
 				errors(0, 0);
 			ft_memdel((void**)&info);
