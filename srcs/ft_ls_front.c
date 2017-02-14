@@ -6,7 +6,7 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/02 02:53:24 by agrumbac          #+#    #+#             */
-/*   Updated: 2017/02/14 11:09:41 by Anselme          ###   ########.fr       */
+/*   Updated: 2017/02/14 20:22:11 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ void				ft_ls_front(const t_list *lst, const char *flags, \
 	t_pls				*info;
 	unsigned int		padd[10];
 	static char			*color[COLORS] = \
-	{NORMAL, RED, GREEN, YELLOW, BLUE, MAGENTA, CYAN, MATRIX};
+	{"", RED, GREEN, YELLOW, BLUE, MAGENTA, CYAN, MATRIX};
 
 	info = (t_pls*)(lst->content);
 	ft_bzero(padd, sizeof(padd));
