@@ -6,7 +6,7 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/01 21:26:08 by agrumbac          #+#    #+#             */
-/*   Updated: 2017/02/07 15:48:25 by agrumbac         ###   ########.fr       */
+/*   Updated: 2017/02/14 13:53:41 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,11 @@ static void		setflags(char *flags, const char *format)
 	flags_count = ft_strlen(flags);
 	while (*format)
 	{
-		if (ft_strchr(LS_FLAGS, *format) && !ft_strchr(flags, *format))
-			flags[flags_count++] = *format;
+		if (ft_strchr(LS_FLAGS, *format))
+		{
+			if (!ft_strchr(flags, *format))
+				flags[flags_count++] = *format;
+		}
 		else
 			errors(1, (char[2]){(*format), '\0'});
 		format++;
