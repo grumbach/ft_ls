@@ -6,7 +6,7 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/02 02:53:24 by agrumbac          #+#    #+#             */
-/*   Updated: 2017/02/11 18:15:45 by agrumbac         ###   ########.fr       */
+/*   Updated: 2017/02/14 11:09:41 by Anselme          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,8 @@ static void			print_path(const char *path, const t_list *lst, \
 	}
 }
 
-static void			list_view(const t_pls *info, const uint *padd)
+static void			list_view(const t_pls *info, const uint *padd, \
+					char **color, const char *flags)
 {
 	char				*date;
 
@@ -104,7 +105,8 @@ static void			list_view(const t_pls *info, const uint *padd)
 	else
 		ft_printf("%*lld", padd[MAJ] + (padd[MAJ] ? 4 : 1) + \
 		padd[SIZE], info->size);
-	ft_printf(" %-*s %s%.*s%.*s\n", padd[DATE], date, info->name, \
+	ft_printf(" %-*s %s%s"NORMAL"%.*s%.*s\n", padd[DATE], date, \
+	color[ft_ls_colors(info, flags)], info->name, \
 	(info->linkpath ? -1 : 0), " -> ", (info->linkpath ? -1 : 0), \
 	info->linkpath);
 	ft_memdel((void**)&date);
@@ -115,6 +117,8 @@ void				ft_ls_front(const t_list *lst, const char *flags, \
 {
 	t_pls				*info;
 	unsigned int		padd[10];
+	static char			*color[COLORS] = \
+	{NORMAL, RED, GREEN, YELLOW, BLUE, MAGENTA, CYAN, MATRIX};
 
 	info = (t_pls*)(lst->content);
 	ft_bzero(padd, sizeof(padd));
@@ -126,9 +130,10 @@ void				ft_ls_front(const t_list *lst, const char *flags, \
 	{
 		info = (t_pls*)(lst->content);
 		if (ft_strchr(flags, 'l'))
-			list_view(info, padd);
+			list_view(info, padd, color, flags);
 		else
-			ft_printf("%s\n", info->name);
+			ft_printf("%s%s"NORMAL"\n", \
+			color[ft_ls_colors(info, flags)], info->name);
 		lst = lst->next;
 	}
 }

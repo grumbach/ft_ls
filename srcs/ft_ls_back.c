@@ -39,7 +39,7 @@ static void		modeguy(struct stat stats, char *mode)
 	*mode++ = (stats.st_mode & S_IXOTH ? 'x' : '-');
 }
 
-static void		fill_assist(t_pls *info, const char *newpath)
+static int		fill_assist(t_pls *info, const char *newpath)
 {
 	char				buf[FILENAMEMAXLEN + 1];
 	ssize_t				kneth;
@@ -55,7 +55,7 @@ static void		fill_assist(t_pls *info, const char *newpath)
 	if (info->mode[0] == 'c' || info->mode[0] == 'b')
 	{
 		if (stat(newpath, &sym_stat) == -1)
-			return ;
+			return ((int)errors(0, newpath));
 		denz = sym_stat.st_rdev;
 		while ((denz / 256) > 0)
 			denz = denz / 256;
@@ -63,6 +63,7 @@ static void		fill_assist(t_pls *info, const char *newpath)
 		info->size = sym_stat.st_rdev % 256;
 	}
 	ft_memdel((void**)&newpath);
+	return (0);
 }
 
 static int		fill_info(t_pls *info, char *file, \
@@ -80,19 +81,19 @@ static int		fill_info(t_pls *info, char *file, \
 		return ((int)errors(0, 0));
 	ft_memdel((void**)&t);
 	if (lstat(newpath, &stats) == -1)
-		return ((int)errors(0, newpath));
+		return ((int)errors(0, newpath) + fill_assist(info, newpath));
 	modeguy(stats, info->mode);
 	info->links = stats.st_nlink;
-	pwd = getpwuid(stats.st_uid);
-	grp = getgrgid(stats.st_gid);
-	if (!(info->own = ft_strdup(pwd->pw_name)) || \
-		!(info->group = ft_strdup(grp->gr_name)))
-		errors(0, 0);
 	info->size = stats.st_size;
 	info->blocks = stats.st_blocks;
 	info->date = stats.st_mtime;
-	fill_assist(info, newpath);
-	return (0);
+	if (!(pwd = getpwuid(stats.st_uid)) || \
+		!(grp = getgrgid(stats.st_gid)))
+		return ((int)errors(0, newpath) + fill_assist(info, newpath));
+	if (!(info->own = ft_strdup(pwd->pw_name)) || \
+		!(info->group = ft_strdup(grp->gr_name)))
+		errors(0, 0);
+	return (fill_assist(info, newpath));
 }
 
 static t_list	*not_a_dir(const char *name)
