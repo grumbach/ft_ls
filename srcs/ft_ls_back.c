@@ -6,7 +6,7 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/02 02:53:36 by agrumbac          #+#    #+#             */
-/*   Updated: 2017/02/14 20:13:24 by agrumbac         ###   ########.fr       */
+/*   Updated: 2017/02/15 20:20:10 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,9 @@ static void		modeguy(struct stat stats, char *mode)
 	*mode++ = (stats.st_mode & S_IXGRP ? 'x' : '-');
 	*mode++ = (stats.st_mode & S_IROTH ? 'r' : '-');
 	*mode++ = (stats.st_mode & S_IWOTH ? 'w' : '-');
-	*mode++ = (stats.st_mode & S_IXOTH ? 'x' : '-');
+	*mode = (stats.st_mode & S_IXOTH ? 'x' : '-');
+	if (stats.st_mode & S_ISVTX)
+		*mode = 't';
 }
 
 static int		fill_assist(t_pls *info, const char *newpath)

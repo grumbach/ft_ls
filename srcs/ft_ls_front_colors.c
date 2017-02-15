@@ -6,7 +6,7 @@
 /*   By: Anselme <Anselme@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/14 10:14:40 by Anselme           #+#    #+#             */
-/*   Updated: 2017/02/14 11:22:47 by Anselme          ###   ########.fr       */
+/*   Updated: 2017/02/15 19:58:26 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int				ft_ls_colors(const t_pls *info, const char *flags)
 {
-	if (!ft_strchr(flags, 'G') || info->mode[0] == '-')
+	if (!ft_strchr(flags, 'G'))
 		return (0);
 	if (info->mode[0] == 'd')
 		return (4);

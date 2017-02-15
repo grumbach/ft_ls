@@ -6,7 +6,7 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/02 02:53:24 by agrumbac          #+#    #+#             */
-/*   Updated: 2017/02/14 20:22:11 by agrumbac         ###   ########.fr       */
+/*   Updated: 2017/02/15 20:02:56 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ static void			print_path(const char *path, const t_list *lst, \
 	}
 	else if (flags)
 	{
-		if (ft_strchr(flags, 'l'))
+		if (ft_strchr(flags, 'l') && ((t_pls*)(lst->content))->group)
 		{
 			if (((t_pls*)(lst->content))->not_a_dir == 0)
 				ft_printf("total %lld\n", total_block_date_time(lst, 0, 0));
@@ -95,21 +95,25 @@ static void			list_view(const t_pls *info, const uint *padd, \
 	char				*date;
 
 	date = NULL;
-	total_block_date_time(0, info->date, &date);
-	ft_printf("%-*s %*d %-*s %-*s ", padd[MODE] + 1, info->mode, \
-	padd[LNKS], info->links, padd[OWN] + 1, info->own, padd[GROUP], \
-	info->group);
-	if (info->major >= 0)
-		ft_printf("%*d%.*s%*lld", padd[MAJ] + 2, info->major, \
-		(info->major >= 0 ? -1 : 0), ", ", padd[SIZE], info->size);
-	else
-		ft_printf("%*lld", padd[MAJ] + (padd[MAJ] ? 4 : 1) + \
-		padd[SIZE], info->size);
-	ft_printf(" %-*s %s%s"NORMAL"%.*s%.*s\n", padd[DATE], date, \
-	color[ft_ls_colors(info, flags)], info->name, \
-	(info->linkpath ? -1 : 0), " -> ", (info->linkpath ? -1 : 0), \
-	info->linkpath);
-	ft_memdel((void**)&date);
+	if (info->own && info->group && info->name)
+	{
+		total_block_date_time(0, info->date, &date);
+		ft_printf("%-*s %*d %-*s %-*s ", padd[MODE] + 1, info->mode, \
+		padd[LNKS], info->links, padd[OWN] + 1, info->own, padd[GROUP], \
+		info->group);
+		if (info->major >= 0)
+			ft_printf("%*d%.*s%*lld", padd[MAJ] + 2, info->major, \
+			(info->major >= 0 ? -1 : 0), ", ", padd[SIZE], info->size);
+		else
+			ft_printf("%*lld", padd[MAJ] + (padd[MAJ] ? 4 : 1) + \
+			padd[SIZE], info->size);
+		ft_printf(" %-*s %s%s%s%.*s%.*s\n", padd[DATE], date, \
+		color[ft_ls_colors(info, flags)], info->name, \
+		(ft_strchr(flags, 'G') ? NORMAL : ""), \
+		(info->linkpath ? -1 : 0), " -> ", (info->linkpath ? -1 : 0), \
+		info->linkpath);
+		ft_memdel((void**)&date);
+	}
 }
 
 void				ft_ls_front(const t_list *lst, const char *flags, \
@@ -132,8 +136,9 @@ void				ft_ls_front(const t_list *lst, const char *flags, \
 		if (ft_strchr(flags, 'l'))
 			list_view(info, padd, color, flags);
 		else
-			ft_printf("%s%s"NORMAL"\n", \
-			color[ft_ls_colors(info, flags)], info->name);
+			ft_printf("%s%s%s\n", \
+			color[ft_ls_colors(info, flags)], info->name, \
+			(ft_strchr(flags, 'G') ? NORMAL : ""));
 		lst = lst->next;
 	}
 }
