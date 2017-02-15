@@ -6,14 +6,14 @@
 #    By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/01/11 00:03:30 by agrumbac          #+#    #+#              #
-#    Updated: 2017/02/14 10:41:21 by Anselme          ###   ########.fr        #
+#    Updated: 2017/02/15 21:57:39 by agrumbac         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = ft_ls
 
 SRC = ft_ls.c ft_ls_front.c ft_ls_rec.c ft_ls_front_colors.c\
-ft_ls_back.c ft_ls_back_sort.c ft_ls_back_args.c
+ft_ls_back.c ft_ls_back_sort.c ft_ls_back_args.c ft_ls_back_args_sort.c
 
 OBJDIR = objs
 

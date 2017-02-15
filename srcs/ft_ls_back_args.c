@@ -6,7 +6,7 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/04 05:50:09 by agrumbac          #+#    #+#             */
-/*   Updated: 2017/02/11 18:44:45 by agrumbac         ###   ########.fr       */
+/*   Updated: 2017/02/15 21:57:04 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,22 +23,6 @@ int				ft_ls_error_file_dir(const char *path)
 		return (3 + 0 * (int)closedir(dirp));
 	if (stat(path, &stats) != -1 && !(S_ISDIR(stats.st_mode)))
 		return (2);
-	return (1);
-}
-
-static int		sort_args(void *a, void *b)
-{
-	int			type_a;
-	int			type_b;
-
-	type_a = ft_ls_error_file_dir((char*)a);
-	type_b = ft_ls_error_file_dir((char*)b);
-	if (type_a > type_b)
-		return (0);
-	else if (type_a < type_b)
-		return (1);
-	else if (ft_strcmp((char*)a, (char*)b) > 0)
-		return (0);
 	return (1);
 }
 
@@ -71,7 +55,7 @@ static void		ls_caller(const t_list *lst, const char *flags, int args)
 				else
 					break ;
 			}
-		(files ? ft_ls_front(files, flags, 0, args) :
+		(files ? ft_ls_front(ft_ls_sort(files, flags), flags, 0, args) :
 		ft_ls((char*)(lst->content), flags, args));
 		lst = (files ? lst : lst->next);
 	}
@@ -94,7 +78,7 @@ void			ft_ls_args(int ac, char **av, int i, const char *flags)
 			ft_lstaddend(&lst, tmp);
 		i++;
 	}
-	lst = ft_ls_listsort(lst, &sort_args);
+	lst = ft_ls_back_args_sort(lst, flags);
 	ls_caller(lst, flags, ft_lstsize(lst));
 	ft_lstdel(&lst, &free_char);
 }

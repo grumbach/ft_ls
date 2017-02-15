@@ -6,7 +6,7 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/01 21:27:06 by agrumbac          #+#    #+#             */
-/*   Updated: 2017/02/14 11:02:46 by Anselme          ###   ########.fr       */
+/*   Updated: 2017/02/15 21:45:31 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ int					ft_ls_error_file_dir(const char *path);
 t_list				*ft_ls_listsort(t_list *lst, int (*cmp)(void*, void*));
 long				errors(const int error, const char *letter);
 int					ft_ls_colors(const t_pls *info, const char *flags);
+t_list				*ft_ls_back_args_sort(t_list *lst, const char *flags);
 
 # define MODE 0
 # define LNKS 1
