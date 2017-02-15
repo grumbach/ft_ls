@@ -6,7 +6,7 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/01 21:26:08 by agrumbac          #+#    #+#             */
-/*   Updated: 2017/02/14 13:53:41 by agrumbac         ###   ########.fr       */
+/*   Updated: 2017/02/15 22:05:05 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ long			errors(int error, const char *letter)
 	return (0);
 }
 
-static void		free_lst(void *inf, size_t size)
+void			free_lst(void *inf, size_t size)
 {
 	t_pls		*info;
 

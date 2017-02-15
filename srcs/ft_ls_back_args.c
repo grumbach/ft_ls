@@ -6,7 +6,7 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/04 05:50:09 by agrumbac          #+#    #+#             */
-/*   Updated: 2017/02/15 21:57:04 by agrumbac         ###   ########.fr       */
+/*   Updated: 2017/02/15 22:11:40 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,23 @@ static void		free_char(void *str, size_t size)
 	ft_memdel(&str);
 }
 
+static void		ls_caller_call(const t_list *lst, t_list *files, \
+				const char *flags, int args)
+{
+	if (files)
+	{
+		ft_ls_front(ft_ls_sort(files, flags), flags, 0, args);
+		ft_lstdel(&files, &free_lst);
+	}
+	else
+	{
+		if (ft_ls_error_file_dir((char*)(lst->content)) == 3 && \
+			ft_strchr(flags, 'R'))
+			ft_printf("\n%s:\n", (char*)(lst->content));
+		ft_ls((char*)(lst->content), flags, args);
+	}
+}
+
 static void		ls_caller(const t_list *lst, const char *flags, int args)
 {
 	t_list		*tmp;
@@ -55,8 +72,7 @@ static void		ls_caller(const t_list *lst, const char *flags, int args)
 				else
 					break ;
 			}
-		(files ? ft_ls_front(ft_ls_sort(files, flags), flags, 0, args) :
-		ft_ls((char*)(lst->content), flags, args));
+		ls_caller_call(lst, files, flags, args);
 		lst = (files ? lst : lst->next);
 	}
 }
