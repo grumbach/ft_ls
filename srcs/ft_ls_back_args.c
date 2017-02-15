@@ -6,7 +6,7 @@
 /*   By: agrumbac <agrumbac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/04 05:50:09 by agrumbac          #+#    #+#             */
-/*   Updated: 2017/02/15 22:11:40 by agrumbac         ###   ########.fr       */
+/*   Updated: 2017/02/15 22:48:01 by agrumbac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,6 @@ static void		ls_caller_call(const t_list *lst, t_list *files, \
 	}
 	else
 	{
-		if (ft_ls_error_file_dir((char*)(lst->content)) == 3 && \
-			ft_strchr(flags, 'R'))
-			ft_printf("\n%s:\n", (char*)(lst->content));
 		ft_ls((char*)(lst->content), flags, args);
 	}
 }
